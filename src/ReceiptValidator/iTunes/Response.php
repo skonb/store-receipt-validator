@@ -81,6 +81,13 @@ class Response
      */
     protected $_purchases = [];
 
+	
+    /**
+     * purhcases info
+     * @var array
+     */
+    protected $_raw_response = [];
+	
     /**
      * Constructor
      *
@@ -166,6 +173,16 @@ class Response
     {
         return $this->_bundle_id;
     }
+	
+    /**
+     * Get the raw response
+     *
+     * @return array
+     */
+    public function getRawResponse()
+    {
+        return $this->_raw_response;
+    }
 
     /**
      * returns if the receipt is valid or not
@@ -192,7 +209,7 @@ class Response
         if (!is_array($jsonResponse)) {
             throw new RuntimeException('Response must be a scalar value');
         }
-
+		$this->_raw_response = $jsonResponse;
         // ios > 7 receipt validation
         if (array_key_exists('receipt', $jsonResponse) && is_array($jsonResponse['receipt']) && array_key_exists('in_app', $jsonResponse['receipt']) && is_array($jsonResponse['receipt']['in_app'])) {
             $this->_code = $jsonResponse['status'];
